@@ -5,8 +5,17 @@ import Label from '@components/label'
 import TextArea from '@components/text-area'
 import styles from './add-comment.module.css'
 import { supabase } from '../../../../../lib/supabaseClient'
+import useSWRMutation from 'swr/mutation'
+import {
+  addComment,
+  commentsCacheKey,
+} from '../../../../../api-routes/comments'
 
 export default function AddComment({ postId }) {
+  const { trigger: addCommentTrigger } = useSWRMutation(
+    commentsCacheKey,
+    addComment
+  )
   const formRef = useRef() // create a reference
   console.log(postId)
   const handleOnSubmit = async (event) => {
@@ -15,16 +24,11 @@ export default function AddComment({ postId }) {
     const formData = new FormData(event.target)
 
     const { author, comment } = Object.fromEntries(formData)
+    await addCommentTrigger({ author, comment, post_id: postId })
 
     /* 
       Perhaps a good place to add a comment to the database that is associated with the blog post 😙
   */
-    const { error } = await supabase
-      .from('comments')
-      .insert({ author, comment, post_id: postId})
-
-    console.log(error)
-    console.log({ author, comment })
 
     // Reset the form after submission?
     formRef.current.reset()

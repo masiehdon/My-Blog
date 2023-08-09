@@ -10,11 +10,12 @@ export const getComments = async (postId) => {
   return { data, error, status }
 }
 
-export const deleteComment = async (_, {arg: id}) => {
-  const { data, error } = await supabase 
-    .from('comments')
-    .delete()
-  .eq('id', id)
-  
-  return { data, error}
+export const deleteComment = async (_, { arg: id }) => {
+  const { data, error } = await supabase.from('comments').delete().eq('id', id)
+
+  return { data, error }
+}
+
+export const addComment = async (_, { arg: newComment }) => {
+  const { error } = await supabase.from('comments').insert(newComment)
 }

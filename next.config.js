@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["media.wired.com"],
+    domains: ['media.wired.com', 'ionwangbjoawfhsmpbmk.supabase.co'],
   },
-};
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig
